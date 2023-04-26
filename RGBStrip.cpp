@@ -1,7 +1,7 @@
 #include "RGBStrip.h"
 #include "pins.h"
 
-Adafruit_NeoPixel NeoPixel(NUM_PIXELS, PIN_NEO_PIXEL, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel NeoPixel = Adafruit_NeoPixel(NUM_PIXELS, PIN_NEO_PIXEL, NEO_RGBW + NEO_KHZ800);
 
 void RGBSetup()
 {
@@ -15,44 +15,44 @@ void updateRGBStrip(bool isBucketLifting)
 
   if (digitalRead(START_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(0, NeoPixel.Color(255, 255, 255));
+    NeoPixel.setPixelColor(0, NeoPixel.Color(0, 0, 0, 100));
   }
   else
   {
-    NeoPixel.setPixelColor(0, NeoPixel.Color(0, 0, 0));
+    NeoPixel.setPixelColor(0, NeoPixel.Color(0, 0, 0, 0));
   }
 
   if (digitalRead(RED_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 0, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 0, 0, 0));
   }
   else if (digitalRead(GREEN_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 255, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 255, 0, 0));
   }
   else if (digitalRead(YELLOW_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 255, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 255, 0, 0));
   }
   else if (digitalRead(BLUE_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 255));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 255, 0));
   }
   else
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 0, 0));
   }
 
   NeoPixel.show(); // send the updated pixel colors to the NeoPixel hardware.
 
   if (isBucketLifting)
   {
-    NeoPixel.setPixelColor(currentOrangeLED, NeoPixel.Color(255, 165, 0));
+    NeoPixel.setPixelColor(currentOrangeLED, NeoPixel.Color(255, 165, 0, 0));
     NeoPixel.show();
     if ((millis() - orangeLEDSetTime) > orangeLEDDelay)
     {
       Serial.println(orangeLEDSetTime);
-      NeoPixel.setPixelColor(currentOrangeLED, NeoPixel.Color(0, 0, 0));
+      NeoPixel.setPixelColor(currentOrangeLED, NeoPixel.Color(0, 0, 0, 0));
       NeoPixel.show();
       currentOrangeLED++;
       if (currentOrangeLED == 8)
@@ -74,32 +74,32 @@ void updateRGBStrip(int driveState)
 
   if (digitalRead(START_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(0, NeoPixel.Color(255, 255, 255));
+    NeoPixel.setPixelColor(0, NeoPixel.Color(0, 0, 0, 100));
   }
   else
   {
-    NeoPixel.setPixelColor(0, NeoPixel.Color(0, 0, 0));
+    NeoPixel.setPixelColor(0, NeoPixel.Color(0, 0, 0, 0));
   }
 
   if (digitalRead(RED_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 0, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 0, 0, 0));
   }
   else if (digitalRead(GREEN_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 255, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 255, 0, 0));
   }
   else if (digitalRead(YELLOW_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 255, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 255, 0, 0));
   }
   else if (digitalRead(BLUE_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 255));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 255, 0));
   }
   else
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 0, 0));
   }
 
   NeoPixel.show(); // send the updated pixel colors to the NeoPixel hardware.
@@ -109,22 +109,24 @@ void updateRGBStrip(int driveState)
     case 0:
       for(int i = 2; i < 8; i++)
       {
-        NeoPixel.setPixelColor(i, NeoPixel.Color(0, 0, 0));
+        NeoPixel.setPixelColor(i, NeoPixel.Color(0, 0, 0, 0));
       }
       break;
     
     case 1:
       for(int i = 2; i < 8; i++)
       {
-        NeoPixel.setPixelColor(i, NeoPixel.Color(50, 205, 50));
+        NeoPixel.setPixelColor(i, NeoPixel.Color(50, 205, 50, 0));
       }
       break;
     
     case 2:
       for(int i = 2; i < 8; i++)
       {
-        NeoPixel.setPixelColor(i, NeoPixel.Color(255, 165, 0));
+        NeoPixel.setPixelColor(i, NeoPixel.Color(255, 165, 0, 0));
       }
       break;
   }
+
+  NeoPixel.show();
 }
