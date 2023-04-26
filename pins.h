@@ -20,6 +20,10 @@ constexpr int GREEN_PIN = 24;
 constexpr int BLUE_PIN = 25;
 constexpr int YELLOW_PIN = 26;
 
+#define irLeftPin A0
+#define irMiddlePin A1
+#define irRightPin A2
+
 void pinSetup();
 
 #endif // PINS_H

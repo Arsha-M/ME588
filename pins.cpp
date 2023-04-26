@@ -24,4 +24,8 @@ void pinSetup()
     pinMode(GREEN_PIN, INPUT);
     pinMode(BLUE_PIN, INPUT);
     pinMode(YELLOW_PIN, INPUT);
+
+    pinMode(irLeftPin, INPUT);
+    pinMode(irMiddlePin, INPUT);
+    pinMode(irRightPin, INPUT);
 }

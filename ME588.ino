@@ -46,6 +46,12 @@ unsigned long currentTime;
 unsigned long elapsedTime;
 int frontDistance;
 
+int irLeftVal;
+int irMiddleVal;
+int irRightVal;
+
+const int irThreshold = 32;
+
 void loop()
 {
   if (!startGame && startGame != digitalRead(START_PIN))
@@ -78,7 +84,23 @@ void loop()
     frontDistance = getFrontDistance();
     while (frontDistance >= DIST1)
     {
-      driveForward(SPEED1);
+      irLeftVal = analogRead(irLeftPin);
+      irMiddleVal = analogRead(irMiddlePin);
+      irRightVal = analogRead(irRightPin);
+
+      if (irLeftVal < irThreshold)
+      {
+        turnLeft(SPEED1, 10);
+      }
+      else if (irRightVal < irThreshold)
+      {
+        turnRight(SPEED1, 10);
+      }
+      else if (irMiddleVal < irThreshold)
+      {
+        driveForward(SPEED1);
+      }
+
       frontDistance = getFrontDistance();
     }
     driveStop();
@@ -121,6 +143,7 @@ void loop()
       frontDistance = getFrontDistance();
     }
     driveStop();
+    FSM_STATE = STOP_FOREVER;
     break;
 
   case STOP_FOREVER:
