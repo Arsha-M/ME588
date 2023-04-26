@@ -7,7 +7,7 @@ bool isBucketLifting = false;
 const int endTimeMilliseconds = 2 * 60 * 1000;
 
 // Define robot speeds
-#define SPEED1 100 // Slow speed
+#define SPEED1 255 // Slow speed
 #define SPEED2 200 // Medium speed
 #define SPEED3 255 // Fast speed
 
@@ -92,7 +92,7 @@ void loop()
       break;
     }
 
-    turnRight(SPEED1, 10000);
+    turnRight(SPEED1, 1500);
     driveStop();
     frontDistance = getFrontDistance();
     while (frontDistance >= DIST1)
@@ -112,7 +112,7 @@ void loop()
       break;
     }
 
-    turnRight(SPEED1, 10000);
+    turnRight(SPEED1, 1500);
     driveStop();
     frontDistance = getFrontDistance();
     while (frontDistance >= DIST2)
