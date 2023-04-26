@@ -72,6 +72,8 @@ void updateRGBStrip(int driveState)
   int currentOrangeLED = 2;
   unsigned long orangeLEDSetTime = millis();
 
+  NeoPixel.clear();
+
   if (digitalRead(START_PIN) == HIGH)
   {
     NeoPixel.setPixelColor(0, NeoPixel.Color(0, 0, 0, 100));
@@ -101,8 +103,6 @@ void updateRGBStrip(int driveState)
   {
     NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 0, 0));
   }
-
-  NeoPixel.show(); // send the updated pixel colors to the NeoPixel hardware.
 
   switch(driveState)
   {
