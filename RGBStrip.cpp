@@ -63,3 +63,68 @@ void updateRGBStrip(bool isBucketLifting)
     }
   }
 }
+
+// driveState = 0 means driveStop();
+// driveState = 1 means driveForward();
+// driveState = 2 means turnRight();
+void updateRGBStrip(int driveState)
+{
+  int currentOrangeLED = 2;
+  unsigned long orangeLEDSetTime = millis();
+
+  if (digitalRead(START_PIN) == HIGH)
+  {
+    NeoPixel.setPixelColor(0, NeoPixel.Color(255, 255, 255));
+  }
+  else
+  {
+    NeoPixel.setPixelColor(0, NeoPixel.Color(0, 0, 0));
+  }
+
+  if (digitalRead(RED_PIN) == HIGH)
+  {
+    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 0, 0));
+  }
+  else if (digitalRead(GREEN_PIN) == HIGH)
+  {
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 255, 0));
+  }
+  else if (digitalRead(YELLOW_PIN) == HIGH)
+  {
+    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 255, 0));
+  }
+  else if (digitalRead(BLUE_PIN) == HIGH)
+  {
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 255));
+  }
+  else
+  {
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 0));
+  }
+
+  NeoPixel.show(); // send the updated pixel colors to the NeoPixel hardware.
+
+  switch(driveState)
+  {
+    case 0:
+      for(int i = 2; i < 8; i++)
+      {
+        NeoPixel.setPixelColor(i, NeoPixel.Color(0, 0, 0));
+      }
+      break;
+    
+    case 1:
+      for(int i = 2; i < 8; i++)
+      {
+        NeoPixel.setPixelColor(i, NeoPixel.Color(50, 205, 50));
+      }
+      break;
+    
+    case 2:
+      for(int i = 2; i < 8; i++)
+      {
+        NeoPixel.setPixelColor(i, NeoPixel.Color(255, 165, 0));
+      }
+      break;
+  }
+}

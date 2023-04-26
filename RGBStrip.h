@@ -9,5 +9,6 @@ const int orangeLEDDelay = 300;
 
 void RGBSetup();
 void updateRGBStrip(bool isBucketLifting);
+void updateRGBStrip(int driveStatus);
 
 #endif // RGBSTRIP_H
