@@ -1,3 +1,4 @@
+#include "pins.h"
 #include "RGBStrip.h"
 
 Adafruit_NeoPixel NeoPixel(NUM_PIXELS, PIN_NEO_PIXEL, NEO_GRB + NEO_KHZ800);
