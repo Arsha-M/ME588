@@ -108,8 +108,9 @@ void updateRGBStrip(int driveState)
     case -1:
       for(int i=2; i < 8; i++)
       {
-        NeoPixel.setPixelColor(i, NeoPixel.Color(0, 255, 0, 0));
+        NeoPixel.setPixelColor(i, NeoPixel.Color(0, 100, 0, 0));
       }
+      break;
     case 0:
       for(int i = 2; i < 8; i++)
       {
@@ -120,14 +121,21 @@ void updateRGBStrip(int driveState)
     case 1:
       for(int i = 2; i < 8; i++)
       {
-        NeoPixel.setPixelColor(i, NeoPixel.Color(255, 0, 0, 0));
+        NeoPixel.setPixelColor(i, NeoPixel.Color(100, 0, 0, 0));
       }
       break;
     
     case 2:
       for (int i = 2; i< 8; i++)
       {
-        NeoPixel.setPixelColor(i, NeoPixel.Color(0, 0, 255, 0));
+        NeoPixel.setPixelColor(i, NeoPixel.Color(0, 0, 100, 0));
+      }
+      break;
+    
+    case 3:
+      for (int i = 2; i< 8; i++)
+      {
+        NeoPixel.setPixelColor(i, NeoPixel.Color(0, 100, 100, 0));
       }
       break;
   }

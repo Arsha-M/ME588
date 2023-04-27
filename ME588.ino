@@ -7,12 +7,12 @@ bool isBucketLifting = false;
 const int endTimeMilliseconds = 2 * 60 * 1000;
 
 // Define robot speeds
-#define SPEED1 255 // Slow speed
-#define SPEED2 200 // Medium speed
+#define SPEED1 205 // Slow speed
+#define SPEED2 220 // Medium speed
 #define SPEED3 255 // Fast speed
 
-// Distance threshold definitions
-#define DIST1 50  // Distance threshold for switching to slow speed
+// Distance threshold definition
+#define DIST1 30  // Distance threshold for switching to slow speed
 #define DIST2 20  // Distance threshold for switching to medium speed
 #define DIST3 300 // Distance threshold for switching to fast speed
 const int DO_NOTHING = 0;
@@ -50,7 +50,9 @@ int irLeftVal;
 int irMiddleVal;
 int irRightVal;
 
-const int irThreshold = 32;
+const int irThreshold = 200;
+
+bool lastTurnRight = false;
 
 void loop()
 {
@@ -88,19 +90,25 @@ void loop()
       irMiddleVal = analogRead(irMiddlePin);
       irRightVal = analogRead(irRightPin);
 
-      if (irLeftVal < irThreshold)
+      Serial.println(irRightVal);
+      Serial.println(irMiddleVal);
+      Serial.println(irLeftVal);
+
+      if(irMiddleVal < irThreshold)
       {
-        turnLeft(SPEED1, 10);
+        Serial.println("Entered Middle");
+        driveForward(SPEED1);
+      }
+      else if (irLeftVal < irThreshold)
+      {
+        Serial.println("Entered Left");
+        turnLeft(SPEED2, 50);
       }
       else if (irRightVal < irThreshold)
       {
-        turnRight(SPEED1, 10);
+        Serial.println("Entered Right");
+        turnRight(SPEED2, 50);
       }
-      else if (irMiddleVal < irThreshold)
-      {
-        driveForward(SPEED1);
-      }
-
       frontDistance = getFrontDistance();
     }
     driveStop();
@@ -114,17 +122,17 @@ void loop()
       break;
     }
 
-    turnRight(SPEED1, 1500);
+    turnRight(SPEED2, 1600);
     driveStop();
     frontDistance = getFrontDistance();
-    while (frontDistance >= DIST1)
+    while (frontDistance >= DIST2)
     {
       driveForward(SPEED1);
       frontDistance = getFrontDistance();
     }
     driveStop();
     FSM_STATE = RETURN_HOME;
-
+    delay(3000);
     break;
 
   case RETURN_HOME:
@@ -134,7 +142,7 @@ void loop()
       break;
     }
 
-    turnRight(SPEED1, 1500);
+    turnRight(SPEED2, 1600);
     driveStop();
     frontDistance = getFrontDistance();
     while (frontDistance >= DIST2)
