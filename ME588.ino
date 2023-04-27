@@ -102,12 +102,12 @@ void loop()
       else if (irLeftVal < irThreshold)
       {
         Serial.println("Entered Left");
-        turnLeft(SPEED2, 50);
+        turnLeft(SPEED2, 25);
       }
       else if (irRightVal < irThreshold)
       {
         Serial.println("Entered Right");
-        turnRight(SPEED2, 50);
+        turnRight(SPEED2, 25);
       }
       frontDistance = getFrontDistance();
     }
@@ -122,7 +122,7 @@ void loop()
       break;
     }
 
-    turnRight(SPEED2, 1600);
+    turnRight(SPEED2, 750);
     driveStop();
     frontDistance = getFrontDistance();
     while (frontDistance >= DIST2)
@@ -142,7 +142,7 @@ void loop()
       break;
     }
 
-    turnRight(SPEED2, 1600);
+    turnRight(SPEED2, 750);
     driveStop();
     frontDistance = getFrontDistance();
     while (frontDistance >= DIST2)
