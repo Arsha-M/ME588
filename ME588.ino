@@ -7,14 +7,14 @@ bool isBucketLifting = false;
 const int endTimeMilliseconds = 2 * 60 * 1000;
 
 // Define robot speeds
-#define SPEED1 205 // Slow speed
-#define SPEED2 220 // Medium speed
+#define SPEED1 185 // Slow speed
+#define SPEED2 180 // Medium speed
 #define SPEED3 255 // Fast speed
 
 // Distance threshold definition
 #define DIST1 30  // Distance threshold for switching to slow speed
 #define DIST2 20  // Distance threshold for switching to medium speed
-#define DIST3 300 // Distance threshold for switching to fast speed
+#define DIST3 60 // Distance threshold for switching to fast speed
 const int DO_NOTHING = 0;
 const int LINE_FOLLOW_FORWARD = 1;
 const int TURN_RIGHT_INTO_WALL = 2;
@@ -74,25 +74,29 @@ void loop()
     {
       FSM_STATE = LINE_FOLLOW_FORWARD;
     }
-    updateRGBStrip(0);
+    updateRGBStrip(-10);
     break;
 
   case LINE_FOLLOW_FORWARD:
-    if (elapsedTime > endTimeMilliseconds)
+    if (elapsedTime > endTimeMilliseconds || !startGame)
     {
       FSM_STATE = DO_NOTHING;
       break;
     }
     frontDistance = getFrontDistance();
-    while (frontDistance >= DIST1)
+    Serial.println(frontDistance);
+    if (frontDistance >= DIST1)
     {
+      
       irLeftVal = analogRead(irLeftPin);
       irMiddleVal = analogRead(irMiddlePin);
       irRightVal = analogRead(irRightPin);
 
-      Serial.println(irRightVal);
-      Serial.println(irMiddleVal);
-      Serial.println(irLeftVal);
+      // Serial.println(irRightVal);
+      // Serial.println(irMiddleVal);
+      // Serial.println(irLeftVal);
+      Serial.println(frontDistance);
+
 
       if(irMiddleVal < irThreshold)
       {
@@ -111,12 +115,15 @@ void loop()
       }
       frontDistance = getFrontDistance();
     }
-    driveStop();
-    FSM_STATE = TURN_RIGHT_INTO_WALL;
+    else
+    {
+      driveStop();
+      FSM_STATE = TURN_RIGHT_INTO_WALL;
+    }
     break;
 
   case TURN_RIGHT_INTO_WALL:
-    if (elapsedTime > endTimeMilliseconds)
+    if (elapsedTime > endTimeMilliseconds || !startGame)
     {
       FSM_STATE = DO_NOTHING;
       break;
@@ -136,7 +143,7 @@ void loop()
     break;
 
   case RETURN_HOME:
-    if (elapsedTime > endTimeMilliseconds)
+    if (elapsedTime > endTimeMilliseconds || !startGame)
     {
       FSM_STATE = DO_NOTHING;
       break;
@@ -145,7 +152,7 @@ void loop()
     turnRight(SPEED2, 750);
     driveStop();
     frontDistance = getFrontDistance();
-    while (frontDistance >= DIST2)
+    while (frontDistance >= DIST3)
     {
       driveForward(SPEED1);
       frontDistance = getFrontDistance();

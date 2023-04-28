@@ -70,7 +70,6 @@ void updateRGBStrip(bool isBucketLifting)
 // driveState = 2 means turnRight();
 void updateRGBStrip(int driveState)
 {
-  int rollingDelayMilliseconds = 100;
   NeoPixel.clear();
 
   if (digitalRead(START_PIN) == HIGH)
@@ -84,19 +83,19 @@ void updateRGBStrip(int driveState)
 
   if (digitalRead(RED_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 255, 0, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 50, 0, 0));
   }
   else if (digitalRead(GREEN_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 0, 0, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(50, 0, 0, 0));
   }
   else if (digitalRead(YELLOW_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(255, 255, 0, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(50, 50, 0, 0));
   }
   else if (digitalRead(BLUE_PIN) == HIGH)
   {
-    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 255, 0));
+    NeoPixel.setPixelColor(1, NeoPixel.Color(0, 0, 50, 0));
   }
   else
   {
@@ -138,6 +137,13 @@ void updateRGBStrip(int driveState)
         NeoPixel.setPixelColor(i, NeoPixel.Color(0, 100, 100, 0));
       }
       break;
+    default:
+            for (int i = 2; i< 8; i++)
+      {
+        NeoPixel.setPixelColor(i, NeoPixel.Color(0, 0, 0, 0));
+      }
+      break;
+
   }
 
   NeoPixel.show();

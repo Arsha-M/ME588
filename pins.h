@@ -15,10 +15,10 @@ constexpr int enA = 13; // L298N motor driver enable pin for motor A
 
 constexpr int START_PIN = 22;
 
-constexpr int RED_PIN = 23;
-constexpr int GREEN_PIN = 24;
-constexpr int BLUE_PIN = 25;
-constexpr int YELLOW_PIN = 26;
+constexpr int RED_PIN = 26;
+constexpr int GREEN_PIN = 27;
+constexpr int BLUE_PIN = 28;
+constexpr int YELLOW_PIN = 29;
 
 #define irLeftPin A0
 #define irMiddlePin A1
