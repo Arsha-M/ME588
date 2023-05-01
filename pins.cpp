@@ -2,6 +2,8 @@
 
 #include <Arduino.h>
 
+// This file specifies the setup for all the Arduino pins that are used.
+
 void pinSetup()
 {
     pinMode(PIN_NEO_PIXEL, OUTPUT);

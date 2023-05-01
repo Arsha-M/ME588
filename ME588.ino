@@ -3,18 +3,18 @@
 #include "pins.h"
 
 bool startGame = false;
-bool isBucketLifting = false;
 const int endTimeMilliseconds = 2 * 60 * 1000;
 
 // Define robot speeds
-#define SPEED1 185 // Slow speed
-#define SPEED2 180 // Medium speed
-#define SPEED3 255 // Fast speed
+#define SPEED1 185 // Forward Speed
+#define SPEED2 180 // Turning Speed
+#define SPEED3 255 // Max Speed
 
 // Distance threshold definition
-#define DIST1 30  // Distance threshold for switching to slow speed
-#define DIST2 20  // Distance threshold for switching to medium speed
-#define DIST3 60 // Distance threshold for switching to fast speed
+#define DIST1 30  // Distance threshold for end of field
+#define DIST2 20  // Distance threshold for side wall
+#define DIST3 60 // Distance threshold for zone wall
+
 const int DO_NOTHING = 0;
 const int LINE_FOLLOW_FORWARD = 1;
 const int TURN_RIGHT_INTO_WALL = 2;
@@ -29,6 +29,7 @@ void setup()
   RGBSetup();
 }
 
+// Returns ultrasonic distance in cm.
 int getFrontDistance()
 {
   digitalWrite(frontTriggerPin, LOW); // Clear the trigPin by setting it LOW:
@@ -52,10 +53,9 @@ int irRightVal;
 
 const int irThreshold = 200;
 
-bool lastTurnRight = false;
-
 void loop()
 {
+  // Check for start switch and initialize 2 min timer.
   if (!startGame && startGame != digitalRead(START_PIN))
   {
     startTime = millis();
@@ -67,6 +67,7 @@ void loop()
   }
   startGame = digitalRead(START_PIN);
 
+  // Switch-Case for FSM
   switch (FSM_STATE)
   {
   case DO_NOTHING:
@@ -84,7 +85,6 @@ void loop()
       break;
     }
     frontDistance = getFrontDistance();
-    Serial.println(frontDistance);
     if (frontDistance >= DIST1)
     {
       
@@ -92,25 +92,17 @@ void loop()
       irMiddleVal = analogRead(irMiddlePin);
       irRightVal = analogRead(irRightPin);
 
-      // Serial.println(irRightVal);
-      // Serial.println(irMiddleVal);
-      // Serial.println(irLeftVal);
-      Serial.println(frontDistance);
-
-
+      // Choose direction based on IR line sensors
       if(irMiddleVal < irThreshold)
       {
-        Serial.println("Entered Middle");
         driveForward(SPEED1);
       }
       else if (irLeftVal < irThreshold)
       {
-        Serial.println("Entered Left");
         turnLeft(SPEED2, 25);
       }
       else if (irRightVal < irThreshold)
       {
-        Serial.println("Entered Right");
         turnRight(SPEED2, 25);
       }
       frontDistance = getFrontDistance();
@@ -129,8 +121,11 @@ void loop()
       break;
     }
 
+    // Turn right towards side wall
     turnRight(SPEED2, 750);
     driveStop();
+
+    // Drive forward until wall detected
     frontDistance = getFrontDistance();
     while (frontDistance >= DIST2)
     {
@@ -138,8 +133,9 @@ void loop()
       frontDistance = getFrontDistance();
     }
     driveStop();
+  
     FSM_STATE = RETURN_HOME;
-    delay(3000);
+    delay(1000); // Pause for debugging
     break;
 
   case RETURN_HOME:
@@ -149,8 +145,11 @@ void loop()
       break;
     }
 
+    // Turn right towards home zone
     turnRight(SPEED2, 750);
     driveStop();
+
+    // Drive home until wall
     frontDistance = getFrontDistance();
     while (frontDistance >= DIST3)
     {
@@ -158,7 +157,7 @@ void loop()
       frontDistance = getFrontDistance();
     }
     driveStop();
-    FSM_STATE = STOP_FOREVER;
+    FSM_STATE = STOP_FOREVER; // Stops forever (Robot only ever does 1 pass)
     break;
 
   case STOP_FOREVER:

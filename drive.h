@@ -9,7 +9,4 @@ void driveForward(int speed);
 void driveBackward(int speed);
 void driveStop();
 
-void forwardRight(int speed);
-void forwardLeft(int speed);
-
 #endif // DRIVE_H
